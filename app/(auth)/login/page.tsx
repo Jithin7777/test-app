@@ -46,22 +46,24 @@ export default function LoginPage() {
     formState: { isSubmitting },
   } = form;
 
-  const onSubmit = async (data: LoginForm) => {
-    const res = await signIn("credentials", { redirect: false, ...data });
+const onSubmit = async (data: LoginForm) => {
+  // Sign in using credentials
+  const res = await signIn("credentials", { redirect: false, ...data });
 
-    if (res?.error) {
-      alert("Invalid email or password");
-      return;
-    }
+  if (res?.error) {
+    alert("Invalid email or password");
+    return;
+  }
 
-    const session = await getSession();
-    const role = session?.user?.role;
+  // Wait a little and fetch session after login
+  const session = await getSession();
 
-    if (role === "TEACHER") router.replace("/teacher");
-    else if (role === "STUDENT") router.replace("/student");
-    else router.replace("/");
-  };
+  const role = session?.user?.role;
 
+  if (role === "TEACHER") router.replace("/teacher/dashboard");
+  else if (role === "STUDENT") router.replace("/student/dashboard");
+  else router.replace("/");
+};
 //  // After successful sign-in, fetch the session from the API
 //     const sessionRes = await fetch("/api/auth/session");
 //     const sessionData = await sessionRes.json();
