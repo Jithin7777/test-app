@@ -6,7 +6,7 @@ export const config = {
   matcher: ["/teacher/:path*", "/student/:path*"],
 };
 
-export async function proxy(req:NextRequest) {
+export async function middleware(req:NextRequest) {
   const token = await getToken({ req, secret: process.env.AUTH_SECRET });
   const path = req.nextUrl.pathname;
 
